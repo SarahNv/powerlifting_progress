@@ -1,0 +1,13 @@
+name: powerlifting_progress
+title: powerlifting_progress
+username:
+account: narvaiz
+server: shinyapps.io
+hostUrl: https://api.shinyapps.io/v1
+appId: 6237375
+bundleId: 5872072
+url: https://narvaiz.shinyapps.io/powerlifting_progress/
+when: 1651728758.54069
+lastSyncTime: 1651728758.5407
+asMultiple: FALSE
+asStatic: FALSE
