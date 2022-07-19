@@ -26,7 +26,9 @@ library(tidyverse)
 #read in data
 df <- read_sheet("https://docs.google.com/spreadsheets/d/18ItR7lTILKxZ6VA4TRZvwByrr8xwBtjhzu692F733cc/edit?usp=sharing")
 df <- df %>%
-  mutate(date = ymd(date))
+  mutate(date = ymd(date)) %>%
+  arrange(date)
+
 str(df)
 
 # Define UI for application that draws a histogram
@@ -49,7 +51,7 @@ ui <- fluidPage(
     # Show a plot of the generated distribution
     mainPanel(
       h3(textOutput("toptitle"), align = "left"),
-      plotOutput("plot"),
+      plotlyOutput("plot"),
       uiOutput("stats"))
     )
   )
@@ -80,16 +82,13 @@ server <- function(input, output, session) {
     observeEvent(sets_sel(),{
       updateSelectizeInput(session, "reps_var", choices = sort(sets_sel()$reps))
       
-      output$plot <- renderPlot({
+      output$plot <- renderPlotly({
         df %>% 
           filter(lift == input$lift_var,
                  sets == input$sets_var,
                  reps == input$reps_var) %>%
-          ggplot(aes(x=date, y = lbs)) +
-          geom_line(color = "palevioletred3") + 
-          theme_minimal() + 
-          scale_x_date(date_labels = "%b-%d-%y", date_breaks = "2 week") + 
-          theme(axis.text.x=element_text(angle=60, hjust=1)) 
+          plot_ly(x= ~ date, y = ~ lbs,
+          mode = "lines+markers")
       })
       
     })
