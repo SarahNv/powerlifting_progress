@@ -1,5 +1,3 @@
-library(googlesheets4)
-
 # Set authentication token to be stored in a folder called `.secrets`
 #options(gargle_oauth_cache = ".secrets")
 
@@ -20,6 +18,11 @@ library(shiny)
 library(googlesheets4)
 library(lubridate)
 library(tidyverse)
+library(plotly)
+
+#gs4_auth(cache = ".secrets", email = TRUE, use_oob = TRUE)
+#gs4_auth(cache = ".secrets", email = "snarvaiz@vols.utk.edu")
+gs4_deauth()
 
 
 
@@ -29,7 +32,7 @@ df <- df %>%
   mutate(date = ymd(date)) %>%
   arrange(date)
 
-str(df)
+#str(df)
 
 # Define UI for application that draws a histogram
 ui <- fluidPage(
@@ -54,7 +57,6 @@ ui <- fluidPage(
       plotlyOutput("plot"),
       uiOutput("stats"))
     )
-  )
 )
 
 
