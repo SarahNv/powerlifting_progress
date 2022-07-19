@@ -1,17 +1,17 @@
 library(googlesheets4)
 
 # Set authentication token to be stored in a folder called `.secrets`
-options(gargle_oauth_cache = ".secrets")
+#options(gargle_oauth_cache = ".secrets")
 
 # Authenticate manually
-gs4_auth()
+#gs4_auth()
 
 # If successful, the previous step stores a token file.
 # Check that a file has been created with:
-list.files(".secrets/")
+#list.files(".secrets/")
 
 # Check that the non-interactive authentication works by first deauthorizing:
-gs4_deauth()
+#gs4_deauth()
 
 # Authenticate using token. If no browser opens, the authentication works.
 #gs4_auth(cache = ".secrets", email = "snarvaiz@vols.utk.edu")
@@ -20,6 +20,7 @@ library(shiny)
 library(googlesheets4)
 library(lubridate)
 library(tidyverse)
+
 
 
 #read in data
@@ -47,7 +48,9 @@ ui <- fluidPage(
     
     # Show a plot of the generated distribution
     mainPanel(
-      tableOutput("table")
+      h3(textOutput("toptitle"), align = "left"),
+      tableOutput("table"),
+      uiOutput("stats"))
     )
   )
 )
@@ -83,6 +86,26 @@ server <- function(input, output, session) {
                  sets == input$sets_var,
                  reps == input$reps_var) 
       })
+      
+    })
+    
+    output$stats <- renderUI({
+      weight_max <- df %>%
+        filter(lift == input$lift_var,
+               sets == input$sets_var,
+               reps == input$reps_var)
+      
+      weight_max <- max(weight_max$lbs)
+      
+      weight_ave <- df %>%
+        filter(lift == input$lift_var,
+               sets == input$sets_var,
+               reps == input$reps_var)
+      weight_ave <- round(mean(weight_ave$lbs), 2)
+      
+      tags$div(paste("The max", input$lift_var, "weight lifted for", input$sets_var, "x", 
+                     input$reps_var, "is", weight_max, "lbs. The average weight lifted is", weight_ave, "lbs."))
+      
     })
   })
   
