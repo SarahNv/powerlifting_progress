@@ -38,7 +38,7 @@ df <- df %>%
 ui <- fluidPage(
   
   # Application title
-  titlePanel("Sarah's Training Progress (BETA)"),
+  titlePanel("Sarah's Powerlifting Progress"),
   
   # Sidebar with a slider input for number of bins 
   sidebarLayout(
@@ -56,7 +56,16 @@ ui <- fluidPage(
       h3(textOutput("toptitle"), align = "left"),
       plotlyOutput("plot"),
       uiOutput("stats"))
-    )
+    ),
+  tags$footer(
+    "Borrow Shiny app code from ",
+    tags$a(
+      "Github",
+      target = "_blank",
+      href = "https://github.com/SarahNv/powerlifting_progress"
+    ),
+    style = "position: absolute; bottom:0;width: 100%; color: black; text-align: center;"
+  )
 )
 
 
@@ -90,7 +99,10 @@ server <- function(input, output, session) {
                  sets == input$sets_var,
                  reps == input$reps_var) %>%
           plot_ly(x= ~ date, y = ~ lbs,
-          mode = "lines+markers")
+          mode = "lines+markers", text = ~paste("RPE:", rpe), line = list(color = "rgb(235, 169, 169)"),
+          marker = list(color='rgb(153, 153, 255)', size = 10)) %>%
+          layout(xaxis = list(fixedrange = TRUE), yaxis = list(fixedrange = TRUE)) %>%
+          config(displayModeBar = F)
       })
       
     })
@@ -109,8 +121,8 @@ server <- function(input, output, session) {
                reps == input$reps_var)
       weight_ave <- round(mean(weight_ave$lbs), 2)
       
-      tags$div(paste("The max", input$lift_var, "weight lifted for", input$sets_var, "x", 
-                     input$reps_var, "is", weight_max, "lbs. The average weight lifted is", weight_ave, "lbs."))
+      tags$div(HTML(paste("The <b>max</b>", input$lift_var, "weight lifted for", input$sets_var, "x", 
+                     input$reps_var, "is", "<b>",weight_max,"lbs</b>. The <b>average</b> weight lifted is", "<b>",weight_ave, "lbs</b>.")))
       
     })
   })
