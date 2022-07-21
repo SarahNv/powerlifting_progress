@@ -38,34 +38,29 @@ df <- df %>%
 ui <- fluidPage(
   
   # Application title
-  titlePanel("Sarah's Powerlifting Progress"),
+  h1(id = "app-heading", "Sarah's Powerlifting Progress"),
+  tags$style(HTML("#app-heading{color: 	#9999ff}")),
   
   # Sidebar with user input
   fluidRow(
-    column(3,
+    column(width = 3,
            selectizeInput("lift_var",label = 'Select lift',
                      choices = c("",unique(df$lift)),
                      selected = NULL, multiple=F),
       selectizeInput("sets_var", "Select sets",choices = NULL),
       selectizeInput("reps_var", "Select reps", choices = NULL),
+      h4("See my lifts on Instagram!",
+         style = "color: 	#eba9a9; text-align: left; padding: 25px"),
+      tags$iframe(
+        src = "//www.instagram.com/p/CdEHJ2XLay3/embed",
+        height =350, width = 250, style="text-align:center")
     ),
-    
-    # Show a plot of progress
-    column(9, style='padding-left:10px',
-      h4(textOutput("toptitle"), align = "center"),
-      plotlyOutput("plot"),
-      uiOutput("stats")
-    )
+    column(width = 8,
+           h3(textOutput("toptitle"), style = "color: 	#eba9a9; text-align: center", align = "center"),
+           plotlyOutput("plot"),
+           uiOutput("stats", style = "padding: 75px"), style = "display: block; margin-left: auto; margin-right: auto; padding: 25px")
     ),
   
-  fluidRow(
-    column(3,style='padding-top:0px',
-           tags$iframe(
-             src = "http://instagram.com/p/CdEHJ2XLay3/embed",
-             height = 500, width = 300
-           )),
-    
-  ),
   
   tags$footer(
     "Borrow Shiny app code from ",
@@ -74,7 +69,7 @@ ui <- fluidPage(
       target = "_blank",
       href = "https://github.com/SarahNv/powerlifting_progress"
     ),
-    style = "position: absolute; bottom:100;width: 100%; color: black; text-align: center;"
+    style = "position: absolyte; bottom:0; width:95%; height: 50px; padding: 50px; color: black; text-align: center;"
   )
 )
 
