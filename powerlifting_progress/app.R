@@ -40,23 +40,33 @@ ui <- fluidPage(
   # Application title
   titlePanel("Sarah's Powerlifting Progress"),
   
-  # Sidebar with a slider input for number of bins 
-  sidebarLayout(
-    sidebarPanel(
-      selectizeInput("lift_var",label = 'Select lift',
+  # Sidebar with user input
+  fluidRow(
+    column(3,
+           selectizeInput("lift_var",label = 'Select lift',
                      choices = c("",unique(df$lift)),
                      selected = NULL, multiple=F),
       selectizeInput("sets_var", "Select sets",choices = NULL),
       selectizeInput("reps_var", "Select reps", choices = NULL),
     ),
     
-    
-    # Show a plot of the generated distribution
-    mainPanel(
-      h3(textOutput("toptitle"), align = "left"),
+    # Show a plot of progress
+    column(9, style='padding-left:10px',
+      h4(textOutput("toptitle"), align = "center"),
       plotlyOutput("plot"),
-      uiOutput("stats"))
+      uiOutput("stats")
+    )
     ),
+  
+  fluidRow(
+    column(3,style='padding-top:0px',
+           tags$iframe(
+             src = "http://instagram.com/p/CdEHJ2XLay3/embed",
+             height = 500, width = 300
+           )),
+    
+  ),
+  
   tags$footer(
     "Borrow Shiny app code from ",
     tags$a(
@@ -64,7 +74,7 @@ ui <- fluidPage(
       target = "_blank",
       href = "https://github.com/SarahNv/powerlifting_progress"
     ),
-    style = "position: absolute; bottom:0;width: 100%; color: black; text-align: center;"
+    style = "position: absolute; bottom:100;width: 100%; color: black; text-align: center;"
   )
 )
 
